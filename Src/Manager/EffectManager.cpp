@@ -14,7 +14,7 @@ static EffectInfo_ effectInfo_[(int)EFFECT_MAXMNUM];
 
 bool EffectManager::Init(void)
 {
-	effectID_ = EffectID::NONE;
+	//effectID_ = EffectID::NONE;
 	time_ = 0;
 
 	int num_;
@@ -24,9 +24,9 @@ bool EffectManager::Init(void)
 	effectBInfo_ = effectBaseInfo_;
 	for (num_ = 0; num_ < (int)EffectNum::effectNum_;num_++,effectBInfo_++)
 	{
-		effectBaseInfo_->graphHandle_ = -1;
+		effectBInfo_->graphHandle_ = -1;
 
-		if (effectBase_->Init(num_) == NULL)
+		if (effectBase_->Init(num_) != NULL)
 		{
 			if (!effectBase_->Init((int)effectBInfo_))
 			{
@@ -49,8 +49,6 @@ void EffectManager::Terminate(void)
 {
 	int num_;
 	EffectBaseInfo_* effectBInfo_;
-	EffectInfo_* info_;
-
 	// エフェクトをすべて削除する
 	
 	DeleteAll();

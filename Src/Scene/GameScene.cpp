@@ -40,9 +40,9 @@ void GameScene::Init(void)
 	mSceneManager->GetCamera()->SetTransform(mPlayer->GetTransform());
 	mSceneManager->GetCamera()->ChangeMode(Camera::MODE::FOLLOW);
 
-	effect_ = new EffectManager();
-	
-	effect_->Init();
+	//effect_ = new EffectManager();
+
+	//effect_->Init();
 	
 }
 
@@ -51,7 +51,7 @@ void GameScene::Update(void)
 
 	if (keyTrgDown[KEY_SYS_START])
 	{
-		mSceneManager->ChangeScene(SCENE_ID::TITLE, true);
+		//mSceneManager->ChangeScene(SCENE_ID::TITLE, true);
 	}
 
 	mSkyDome->Update();
@@ -101,7 +101,7 @@ void GameScene::Release(void)
 	mPlayer->Release();
 	delete mPlayer;
 
-	effect_->Terminate();
-	delete effect_;
+	/*effect_->Terminate();
+	delete effect_;*/
 
 }

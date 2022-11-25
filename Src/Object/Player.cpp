@@ -817,14 +817,14 @@ void Player::EffectFootSmoke(void)
 		//		playerHandle, mTransform.pos.x, mTransform.pos.y, mTransform.pos.z);
 
 		//}
-		if (mStepFootSmoke % 120 == 0 && len >= 1.0f);
+		if (mStepFootSmoke % 140 == 0 && len >= 1.0f);
 		{
 
 			//エフェクトを再生する//
 			playerHandle = PlayEffekseer3DEffect(mEffectSmoke);
 
 			//エフェクトの大きさを変える//
-			SetScalePlayingEffekseer3DEffect(playerHandle, 5.0f, 5.0f, 5.0f);
+			SetScalePlayingEffekseer3DEffect(playerHandle, 15.0f, 15.0f, 15.0f);
 
 			//エフェクトの位置を変える//
 			SetPosPlayingEffekseer3DEffect(

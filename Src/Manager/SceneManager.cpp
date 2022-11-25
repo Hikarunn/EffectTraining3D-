@@ -5,6 +5,7 @@
 #include "../Common/Fader.h"
 #include "../Manager/ResourceManager.h"
 #include "../Manager/GravityManager.h"
+#include "EffectManager.h"
 #include "../Scene/TitleScene.h"
 #include "../Scene/GameScene.h"
 #include "Camera.h"
@@ -43,7 +44,8 @@ void SceneManager::Init()
 	// デルタタイム
 	mTickCount = std::chrono::system_clock::now();
 
-
+	effectManager_ = new EffectManager();
+	effectManager_->Init();
 }
 
 void SceneManager::Init3D(void)
@@ -177,6 +179,8 @@ void SceneManager::Release(void)
 	mResourceManager->Release();
 	delete mResourceManager;
 
+	effectManager_->Terminate();
+	delete effectManager_;
 }
 
 void SceneManager::ChangeScene(SCENE_ID nextId, bool isFading)

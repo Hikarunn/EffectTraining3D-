@@ -6,6 +6,7 @@ class ResourceManager;
 class Fader;
 class Camera;
 class GravityManager;
+class EffectManager;
 
 // ƒV[ƒ“ŠÇ——p
 enum class SCENE_ID
@@ -49,6 +50,7 @@ private:
 	ResourceManager* mResourceManager;
 	Fader* mFader;
 	Camera* mCamera;
+	EffectManager* effectManager_;
 
 	bool mIsSceneChanging;
 
