@@ -1,0 +1,55 @@
+﻿  Application.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Application.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  Fader.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Common\Fader.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  GameCommon.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Common\GameCommon.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  KeyCheck.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Common\KeyCheck.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  Quaternion.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Common\Quaternion.cpp(2,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  main.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\main.cpp(6,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  Camera.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Manager\Camera.cpp(2,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  GravityManager.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Manager\GravityManager.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  Resource.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Manager\Resource.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  ResourceManager.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Manager\ResourceManager.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  SceneManager.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Manager\SceneManager.cpp(2,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  AnimationController.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Object\Common\AnimationController.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  Capsule.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Object\Common\Capsule.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  Collider.cpp
+  SpeechBalloon.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Object\Common\SpeechBalloon.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  Transform.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Object\Common\Transform.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  Planet.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Object\Planet.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  Player.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Object\Player.cpp(2,9): fatal error C1083: include ファイルを開けません。'EffekseerForDXLib.h':No such file or directory
+  SkyDome.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Manager\SceneManager.h(3,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  Stage.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Object\Stage.cpp(3,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  コードを生成中...
+  コンパイル中...
+  WarpStar.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Object\WarpStar.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  GameScene.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Scene\GameScene.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  SceneBase.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Manager\SceneManager.h(3,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  TitleScene.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Scene\TitleScene.cpp(2,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  AsoUtility.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\Utility\AsoUtility.cpp(6,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  _DebugConOut.cpp
+  _DebugDispOut.cpp
+C:\Users\勝\Desktop\3DAction_BASE\Src\_debug\_DebugDispOut.cpp(3,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  コードを生成中...
