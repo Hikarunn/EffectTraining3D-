@@ -6,6 +6,12 @@ class Stage;
 class SkyDome;
 class Player;
 
+struct EffectTime
+{
+	float dethEffectTime = 120.0f;
+
+};
+
 class GameScene : public SceneBase
 {
 
@@ -24,4 +30,7 @@ private:
 	SkyDome* mSkyDome;
 	Player* mPlayer;
 	EffectManager* effect_;
+	EffectTime effectTimere_;
+
+	float effectTime_;
 };

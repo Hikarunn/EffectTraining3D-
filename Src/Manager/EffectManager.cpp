@@ -21,25 +21,34 @@ bool EffectManager::Init(void)
 	EffectInfo_* info_;
 	EffectBaseInfo_* effectBInfo_;
 
-	effectBInfo_ = effectBaseInfo_;
-	for (num_ = 0; num_ < (int)EffectNum::effectNum_;num_++,effectBInfo_++)
-	{
-		effectBInfo_->graphHandle_ = -1;
+	effectBase_ = new EffectBase(this);
+	effectBase_->Init();
 
-		if (effectBase_->Init(num_) != NULL)
-		{
-			if (!effectBase_->Init((int)effectBInfo_))
-			{
-				return false;
-			}
-		}
-	}
+	effectBInfo_ = effectBaseInfo_;
+	//for (num_ = 0; num_ < (int)EffectNum::effectNum_;num_++)
+	//{
+	//	//effectBInfo_->graphHandle_ = -1;
+	//
+	////	effectBase_->Init(0);
+	//
+	//
+	//
+	//	/*if (effectBase_->Init(num_) != NULL)
+	//	{
+	//		if (!effectBase_->Init((int)effectBInfo_))
+	//		{
+	//			return false;
+	//		}
+	//	}*/
+	//}
 
 	info_ = effectInfo_;
 	for (num_ = 0; num_ < EFFECT_MAXMNUM; num_++, info_++)
 	{
 		info_->useFlag_ = false;
 	}
+
+	//effectBase_->Setup(GetColorU8(255, 255, 255, 255));
 //	effectBase_->Init(effectBaseInfo_->graphHandle_);
 
 	return true;
@@ -58,10 +67,12 @@ void EffectManager::Terminate(void)
 	for (num_ = 0; num_ < (int)EffectNum::effectNum_; num_++, effectBInfo_++)
 	{
 		// エフェクト別の後始末関数がある場合は呼ぶ
-		if (effectBase_->Terminate(num_) != NULL)
+		/*if (effectBase_->Terminate(num_) != NULL)
 		{
 			effectBase_->Terminate((int)effectBInfo_);
-		}
+		}*/
+
+
 
 		// エフェクトで使用していた画像ハンドルを削除
 		if (effectBInfo_->graphHandle_ != -1)
@@ -75,7 +86,7 @@ void EffectManager::Terminate(void)
 	//effectBase_->Terminate(effectBaseInfo_->graphHandle_);
 }
 
-EffectDInfo *EffectManager::Create(EffectNum _effectNum)
+EffectInfo *EffectManager::Create(EffectNum _effectNum)
 {
 	int num_;
 	EffectInfo_* info_;
@@ -111,8 +122,10 @@ EffectDInfo *EffectManager::Create(EffectNum _effectNum)
 	// エフェクト別のデータを格納しているメモリ領域のアドレスを保存するポインタを初期化
 	info_->subData_ = NULL;
 
+	effectBase_->Create();
+
 	// エフェクト別の作成時に呼ぶ関数の呼び出し
-	if (effectBase_->Create(info_))
+	if (effectBase_->Create() == false)
 	{
 		return NULL;
 	}
@@ -121,35 +134,38 @@ EffectDInfo *EffectManager::Create(EffectNum _effectNum)
 	//effectBase_->Create(effectInfo_->subData_);
 }
 
-void EffectManager::EndRequest(EffectInfo_ *_effectInfo)
+void EffectManager::EndRequest(void)
 {
+	
 	// 終了リクエストがされているかどうかのフラグを立てる
-	_effectInfo->endRequest = true;
+	effectInfo_->endRequest = true;
 }
 
-void EffectManager::Delete(EffectInfo_ *_effectInfo)
+void EffectManager::Delete(void)
 {
 	// すでに構造体が使用されていなかった場合何もせずに終了
-	if (_effectInfo->useFlag_)
+	if (effectInfo_->useFlag_ == false)
 	{
 		return;
 	}
 
-	// 削除時に実行する関数があった場合は実行
-	if (effectBase_->Delete(_effectInfo->subData_) != NULL)
-	{
-		effectBase_->Delete(_effectInfo/*->subData_*/);
-	}
+	
 
+	// 削除時に実行する関数があった場合は実行
+	//if (effectBase_->Delete(_effectInfo->subData_) != NULL)
+	//{
+	//	effectBase_->Delete(_effectInfo/*->subData_*/);
+	//}
+	//
 	// エフェクト別の情報があった場合はメモリを開放する
-	if (_effectInfo->subData_ != NULL)
+	/*if (_effectInfo->subData_ != NULL)
 	{
 		free(_effectInfo->subData_);
 		_effectInfo->subData_ = NULL;
-	}
+	}*/
 
 	// 構造体を使用しているかどうかのフラグを倒す
-	_effectInfo->useFlag_ = false;
+	effectInfo_->useFlag_ = false;
 
 	//effectBase_->Delete(effectInfo_->subData_);
 }
@@ -163,7 +179,7 @@ void EffectManager::DeleteAll(void)
 	info_ = effectInfo_;
 	for (num_ = 0; num_ < EFFECT_MAXMNUM; num_++, info_++)
 	{
-		effectBase_->Delete(info_);
+	//	effectBase_->Delete(info_);
 	}
 }
 
@@ -180,7 +196,7 @@ void EffectManager::StepAll(float _stepTime)
 		{
 			continue;
 		}
-		effectBase_->Step(info_->endRequest, info_->useFlag_, _stepTime, info_->subData_);
+		effectBase_->Step(info_->endRequest, info_->useFlag_, _stepTime);
 	}
 
 
@@ -201,7 +217,7 @@ void EffectManager::RenderAll(void)
 		{
 			continue;
 		}
-		effectBase_->Render(info_->subData_,info_->baseInfo_->graphHandle_);
+		effectBase_->Render();
 	}
 
 //	effectBase_->Render(effectInfo_->subData_,effectBaseInfo_->graphHandle_);

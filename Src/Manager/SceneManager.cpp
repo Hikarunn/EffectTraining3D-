@@ -45,7 +45,7 @@ void SceneManager::Init()
 	mTickCount = std::chrono::system_clock::now();
 
 	effectManager_ = new EffectManager();
-	effectManager_->Init();
+ 	effectManager_->Init();
 }
 
 void SceneManager::Init3D(void)
@@ -219,6 +219,11 @@ ResourceManager* SceneManager::GetResourceManager(void)
 GravityManager* SceneManager::GetGravityManager(void)
 {
 	return mGravityManager;
+}
+
+EffectManager* SceneManager::GetEffectManager(void)
+{
+	return effectManager_;
 }
 
 void SceneManager::ResetDeltaTime(void)

@@ -41,6 +41,8 @@ public:
 	// d—Í•ûŒü‚Ìæ“¾
 	GravityManager* GetGravityManager(void);
 
+	EffectManager* GetEffectManager(void);
+
 private:
 
 	SCENE_ID mSceneID;

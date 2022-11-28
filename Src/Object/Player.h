@@ -6,6 +6,7 @@
 class SceneManager;
 class ResourceManager;
 class GravityManager;
+class EffectManager;
 class AnimationController;
 class Capsule;
 class Collider;
@@ -100,6 +101,7 @@ private:
 	SceneManager* mSceneManager;
 	ResourceManager* mResourceManager;
 	GravityManager* mGravityManager;
+	EffectManager* effectManager_;
 
 	//EffectManager* effectManager_;
 

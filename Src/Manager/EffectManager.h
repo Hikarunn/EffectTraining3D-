@@ -5,12 +5,12 @@ class SceneManager;
 
 static constexpr int EFFECT_MAXMNUM = 256;
 
-
-enum class EffectID
-{
-	NONE,
-	DETH,
-};
+//
+//enum class EffectID
+//{
+//	NONE,
+//	DETH,
+//};
 
 
 enum  class EffectNum
@@ -29,7 +29,7 @@ typedef struct EffectBaseInfo
 }EffectBaseInfo_;
 
 // エフェクトの情報
-typedef struct EffectDInfo
+typedef struct EffectInfo
 {
 	// 構造体を使用しているかどうかのフラグ
 	bool useFlag_;
@@ -56,15 +56,14 @@ public:
 	bool Init(void);
 	void Terminate(void);
 	EffectInfo_* Create(EffectNum _effectNum);
-	void EndRequest(EffectInfo_ *_effectNum);
-	void Delete(EffectInfo_ *_effectNum);
+	void EndRequest(void);
+	void Delete(void);
 	void DeleteAll(void);
 	void StepAll(float _stepTime);
 	void RenderAll(void);
 	
 private:
 	SceneManager* scene_;
-	EffectID effectID_;
 	EffectBase* effectBase_;
 	/*EffectInfo* effectInfo_; */
 	//EffectBaseInfo effectBaseInfo_;

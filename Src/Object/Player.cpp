@@ -19,6 +19,7 @@ Player::Player(SceneManager* manager)
 	mSceneManager = manager;
 	mResourceManager = manager->GetResourceManager();
 	mGravityManager = manager->GetGravityManager();
+	effectManager_ = manager->GetEffectManager();
 
 	mAnimationController = nullptr;
 	mState = STATE::NONE;
@@ -144,7 +145,10 @@ void Player::UpdatePlay(void)
 	mTransform.quaRot = mTransform.quaRot.Mult(mPlayerRotY);
 
 	//歩きエフェクト//
-	EffectFootSmoke();
+	effectManager_->Create(EffectNum::effectDeth_);
+	
+
+	//EffectFootSmoke();
 
 }
 
@@ -157,7 +161,7 @@ void Player::Draw(void)
 	//丸影//
 	DrawShadow();
 
-	//effectManager_->RenderAll();
+	effectManager_->RenderAll();
 
 	// デバッグ用描画
 	DrawDebug();

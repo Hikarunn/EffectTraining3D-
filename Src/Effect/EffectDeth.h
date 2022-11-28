@@ -105,46 +105,57 @@ typedef struct EffectDethParticleInfo
 
 	// 大きさ率
 	float sizeRate_;
-};
+}EffectDethParticleInfo_;
 
 
 class EfffectDeth :public EffectBase
 {
 public:
-	bool Init(int _graphHandle)override;
-	bool Terminate(int _graphHandle)override;
-	bool Create(void* _subDate)override;
-	bool Delete(void* _subDate)override;
-	bool Step(bool _endRequest, bool _useFlag, float _stepTime,void* _subData)override;
-	bool Render(void* _subDate, int _graphHandle)override;
-	bool Setup(void* _subDate,COLOR_U8 _color,int _modelHandle)override;
+	bool Init(void)override;
+	bool Terminate(void)override;
+	bool Create(void)override;
+	bool Delete(void)override;
+	bool Step(bool _endRequest, bool _useFlag, float _stepTime)override;
+	bool Render(void)override;
+	bool Setup(COLOR_U8 _color)override;
 
 
 private:
-
-	// エフェクトの情報
-	typedef struct EffectDInfo
+	typedef struct EffectDethInfo
 	{
 		// エフェクトの色
-		COLOR_U8 color;
+		COLOR_U8 color_;
 
 		// パーティクルの数
-		int particleNum;
+		int particleNum_;
 
 		// パーティクルの情報を格納しているメモリ領域のアドレス
 		EffectDethParticleInfo* partiicle_;
 
-		// 
-		void* subData_;
-	};
+
+	}EffectDethInfo_;
+	
+	
+	// データを格納しているメモリ領域のアドレス
+	void* subData_;
+	
 	// ポリゴン数が多く確保済みの格納用メモリからあふれる場合はメモリ領域の再確保
 	bool ResourceReSecuring(MV1_REF_POLYGONLIST _refMesh_);
 
 
 	// ポリゴンの数だけ繰り返し
-	void PolygonNumRepetition(EffectDInfo* _info, MV1_REF_POLYGONLIST _refMesh, EffectDethParticleInfo* _particleInfo,
+	void PolygonNumRepetition( MV1_REF_POLYGONLIST _refMesh, EffectDethParticleInfo* _particleInfo,
 							EffectDethPolygonInfo* _polygonInfo,float _createNum,int _num);
 
-	Mathematics* math;
+	// グラフィックスハンドル
+	int graphHandle_;
+
+	Mathematics* math; 
+
+	EffectDethInfo_* effectDethInfo_;
+	
+	// ポリゴンの情報を格納しているメモリ領域のアドレス
+	EffectDethPolygonInfo* polygonInfoBuffer_;
+
 };
 

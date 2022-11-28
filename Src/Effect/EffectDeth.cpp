@@ -9,68 +9,70 @@
 
 
 static int polygonInfoBufferSize;
-static EffectDethPolygonInfo* polygonInfoBuffer;
 
 
-
-bool EfffectDeth::Init(int _graphHandle)
+bool EfffectDeth::Init(void)
 {
 	// エフェクトの画像読み込み
-	_graphHandle = LoadGraph("Data/Image/Image/Particle01.png");
 
-	if (_graphHandle < 0)
-	{
+	graphHandle_ = LoadGraph("Data/Image/Image/Particle01.png");
+	
+	// 画像の読み込みに失敗したらfalseを返す
+	if (graphHandle_ < 0) {
 		return false;
 	}
+	// 正常終了
 	return true;
 }
 
-bool EfffectDeth::Terminate(int _graphHandle)
+bool EfffectDeth::Terminate(void)
 {
 	// ポリゴン情報格納用に確保したメモリ
-	if (polygonInfoBuffer != NULL)
+	if (polygonInfoBuffer_ != NULL)
 	{
-		free(polygonInfoBuffer);
-		polygonInfoBuffer = NULL;
+		free(polygonInfoBuffer_);
+		polygonInfoBuffer_ = NULL;
 	}
+	// 正常終了
 	return true;
 }
 
-bool EfffectDeth::Create(void* _subData)
+bool EfffectDeth::Create(void)
 {
-	EffectDInfo* info_;
+	//EffectInfo* info_;
+
 	// エフェクトの情報構造体を格納するメモリ領域確保
-	_subData = malloc(sizeof(EffectDInfo));
-	if (_subData == NULL)
+	subData_ = malloc(sizeof(EffectDethInfo_));
+	if (subData_ == NULL)
 	{
 		return false;
 	}
 
-	info_ = (EffectDInfo*)_subData;
+	
 
-	// パーティクルの情報を格納するメモリの領域のアドレスを保存する変数を初期化する
-	info_->partiicle_ = NULL;
+	subData_ = NULL;
+
+
 
 	// 正常終了
 	return true;
 }
 
-bool EfffectDeth::Delete(void* _subData)
+bool EfffectDeth::Delete(void)
 {
-	EffectDInfo* info_ = (EffectDInfo*)_subData;
 
 	//パーティクルの情報を格納していたメモリ領域を解放
-	if (info_->partiicle_ != NULL) {
-		free(info_->partiicle_);
-		info_->partiicle_ = NULL;
+	if (effectDethInfo_->partiicle_ != NULL) {
+		free(effectDethInfo_->partiicle_);
+		effectDethInfo_->partiicle_ = NULL;
 	}
 	// 正常終了
 	return true;
 }
 
-bool EfffectDeth::Step(bool _endRequest, bool _useFlag, float _stepTime,void* _subData)
+bool EfffectDeth::Step(bool _endRequest, bool _useFlag, float _stepTime)
 {
-	EffectDInfo* info_ = (EffectDInfo*)_subData;
+	
 	EffectDethParticleInfo* particleInfo_;
 	int num_;
 	int validNum_;
@@ -79,8 +81,8 @@ bool EfffectDeth::Step(bool _endRequest, bool _useFlag, float _stepTime,void* _s
 	validNum_ = 0;
 
 	// パーティクルの数だけ繰り返し
-	particleInfo_ = info_->partiicle_;
-	for (num_ = 0; num_ < info_->particleNum; num_++, particleInfo_++)
+	particleInfo_ = effectDethInfo_->partiicle_;
+	for (num_ = 0; num_ < effectDethInfo_->particleNum_; num_++, particleInfo_++)
 	{
 		// 不透明度が０以下の場合は次のループへ
 		if (particleInfo_->alpha_ <= 0.0f)
@@ -157,7 +159,7 @@ bool EfffectDeth::Step(bool _endRequest, bool _useFlag, float _stepTime,void* _s
 	if (_endRequest || validNum_ == 0)
 	{
 		//Effect::Delete(effectInfo);
-		Delete(_subData);
+		Delete();
 
 		//// すでに構造体が使用されていなかった場合何もせず終了
 		//if (_useFlag)
@@ -174,9 +176,9 @@ bool EfffectDeth::Step(bool _endRequest, bool _useFlag, float _stepTime,void* _s
 
 }
 
-bool EfffectDeth::Render(void* _subData, int _graphHandle)
+bool EfffectDeth::Render(void)
 {
-	EffectDInfo* info_ = (EffectDInfo*)_subData;
+	//EffectInfo* info_ = (EffectInfo*)_subData;
 	EffectDethParticleInfo* particleInfo_;
 	int num_;
 	VECTOR drawPos_;
@@ -187,11 +189,11 @@ bool EfffectDeth::Render(void* _subData, int _graphHandle)
 	SetWriteZBufferFlag(FALSE);
 
 	// 描画色をセット
-	SetDrawBright(info_->color.r, info_->color.g, info_->color.b);
+	SetDrawBright(effectDethInfo_->color_.r, effectDethInfo_->color_.g, effectDethInfo_->color_.b);
 
 	// パーティクルの数だけ繰り返し
-	particleInfo_ = info_->partiicle_;
-	for (num_ = 0; info_->particleNum; num_++, particleInfo_++)
+	particleInfo_ = effectDethInfo_->partiicle_;
+	for (num_ = 0; effectDethInfo_->particleNum_; num_++, particleInfo_++)
 	{
 		// 不透明度が０以下のパーティクルは何もしない
 		if (particleInfo_->alpha_ <= 0.0f)
@@ -208,7 +210,7 @@ bool EfffectDeth::Render(void* _subData, int _graphHandle)
 		drawPos_.x = cos(particleInfo_->alpha_) * particleInfo_->distance_;
 
 		// パーティクルを描画
-		DrawBillboard3D(drawPos_, 0.5f, 0.5f, particleInfo_->size_ * particleInfo_->sizeRate_, 0.0f, _graphHandle, TRUE);
+		DrawBillboard3D(drawPos_, 0.5f, 0.5f, particleInfo_->size_ * particleInfo_->sizeRate_, 0.0f, graphHandle_, TRUE);
 	}
 	// 描画ブレンドモードを標準に戻す
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
@@ -223,9 +225,9 @@ bool EfffectDeth::Render(void* _subData, int _graphHandle)
 	return true;
 }
 
-bool EfffectDeth::Setup(void* _subData, COLOR_U8 _color, int _modelHandle)
+bool EfffectDeth::Setup( COLOR_U8 _color)
 {
-	EffectDInfo* info_ = (EffectDInfo*)_subData;
+	//EffectInfo* info_ = (EffectInfo*)_subData;
 	EffectDethParticleInfo* particleInfo_;
 	int num_;
 	float createNum_;
@@ -240,15 +242,15 @@ bool EfffectDeth::Setup(void* _subData, COLOR_U8 _color, int _modelHandle)
 	// info_,createNum,refMesh_,polygonInfo_,rate1_,rate2_
 
 	// エフェクトの色を保存
-	info_->color = _color;
+	effectDethInfo_->color_ = _color;
 
 
 
 	// エフェクトを実行する３Dモデルの参照用メッシュをセットアップ
-	MV1RefreshReferenceMesh(_modelHandle, -1, TRUE, TRUE);
+	MV1RefreshReferenceMesh(graphHandle_, -1, TRUE, TRUE);
 
 	// 参照用メッシュを取得
-	refMesh_ = MV1GetReferenceMesh(_modelHandle, -1, TRUE, TRUE);
+	refMesh_ = MV1GetReferenceMesh(graphHandle_, -1, TRUE, TRUE);
 
 	// ポリゴン数が多く確保済みの格納用メモリからあふれる場合はメモリ領域の再確保
 	ResourceReSecuring(refMesh_);
@@ -258,7 +260,7 @@ bool EfffectDeth::Setup(void* _subData, COLOR_U8 _color, int _modelHandle)
 	}
 
 	// ポリゴンの情報を構築する
-	polygonInfo_ = polygonInfoBuffer;
+	polygonInfo_ = polygonInfoBuffer_;
 	totalAreaSize_ = 0.0f;
 	for (num_ = 0; num_ < refMesh_.PolygonNum; num_++, polygonInfo_++);
 	{
@@ -279,18 +281,18 @@ bool EfffectDeth::Setup(void* _subData, COLOR_U8 _color, int _modelHandle)
 	}
 
 	createNum_ = 0.0f;
-	particleInfo_ = info_->partiicle_;
-	PolygonNumRepetition(info_, refMesh_, particleInfo_, polygonInfo_, createNum_, num_);
+	particleInfo_ = effectDethInfo_->partiicle_;
+	PolygonNumRepetition(refMesh_, particleInfo_, polygonInfo_, createNum_, num_);
 
 	// 確保するメモリ領域に格納するパーティクル情報用の数を算出
 	tempParticleNum_ = (int)(totalAreaSize_ * CREATE_RATE) + ADD_PARTICLE_NUM;
 
 	// パーティクル情報を格納するメモリ領域の確保
-	info_->partiicle_ = (EffectDethParticleInfo*)malloc
+	effectDethInfo_->partiicle_ = (EffectDethParticleInfo*)malloc
 	(tempParticleNum_ * sizeof(EffectDethParticleInfo));
 
 	// メモリ領域の確保に失敗したらエラー終了
-	if (info_->partiicle_ == NULL)
+	if (effectDethInfo_->partiicle_ == NULL)
 	{
 		return false;
 	}
@@ -310,18 +312,18 @@ bool EfffectDeth::ResourceReSecuring(MV1_REF_POLYGONLIST _refMesh)
 	if (polygonInfoBufferSize < _refMesh.PolygonNum)
 	{
 		// すでに確保しているメモリ領域がある場合は解放
-		if (polygonInfoBuffer != NULL)
+		if (polygonInfoBuffer_ != NULL)
 		{
-			free(polygonInfoBuffer);
-			polygonInfoBuffer = NULL;
+			free(polygonInfoBuffer_);
+			polygonInfoBuffer_ = NULL;
 		}
 
 		// ポリゴン情報格納用のメモリを確保
-		polygonInfoBuffer = (EffectDethPolygonInfo*)malloc
+		polygonInfoBuffer_ = (EffectDethPolygonInfo*)malloc
 		(sizeof(EffectDethPolygonInfo) * _refMesh.PolygonNum);
 
 		// メモリ領域の確保に失敗した場合は失敗終了
-		if (polygonInfoBuffer == NULL)
+		if (polygonInfoBuffer_ == NULL)
 		{
 			return false;
 		}
@@ -334,7 +336,7 @@ bool EfffectDeth::ResourceReSecuring(MV1_REF_POLYGONLIST _refMesh)
 	return true;
 }
 
-void EfffectDeth::PolygonNumRepetition(EffectDInfo* _info, MV1_REF_POLYGONLIST _refMesh,EffectDethParticleInfo* _particleInfo,
+void EfffectDeth::PolygonNumRepetition( MV1_REF_POLYGONLIST _refMesh,EffectDethParticleInfo* _particleInfo,
 	EffectDethPolygonInfo* _polygonInfo, float _createNum, int _num)
 {
 	float rate1_;
@@ -342,13 +344,13 @@ void EfffectDeth::PolygonNumRepetition(EffectDInfo* _info, MV1_REF_POLYGONLIST _
 
 	// ポリゴンの数だけ繰り返し
 	
-	_particleInfo = _info->partiicle_;
-	_polygonInfo = polygonInfoBuffer;
-	_info->particleNum = 0;
-	for (_num = 0; _num < _refMesh.PolygonNum; _num++, _polygonInfo++)
+	effectDethInfo_->partiicle_ = _particleInfo;
+	polygonInfoBuffer_ = _polygonInfo;
+	effectDethInfo_->particleNum_ = 0;
+	for (_num = 0; _num < _refMesh.PolygonNum; _num++, polygonInfoBuffer_++)
 	{
 		// パーティクル作成画数カウンタにポリゴンの面積あたりのパーティクルの数を加算する
-		_createNum += _polygonInfo->areaSize_ * CREATE_RATE;
+		_createNum += polygonInfoBuffer_->areaSize_ * CREATE_RATE;
 
 		//パーティクル作成が数のカウンタから1.0f以上ならループ
 		while (_createNum >= 1.0f)
@@ -359,53 +361,55 @@ void EfffectDeth::PolygonNumRepetition(EffectDInfo* _info, MV1_REF_POLYGONLIST _
 			// パーティクルの座標をポリゴン表面上からランダムで決定
 			rate1_ = math->GetRandomFloat(1.0f, 0.0f);
 			rate2_ = math->GetRandomFloat(1.0f - rate1_, 0.0f);
-			_polygonInfo->pos_ = VAdd(_polygonInfo->pos_, VAdd(VScale(_polygonInfo->vec1_, rate1_), VScale(_polygonInfo->vec2_, rate2_)));
+			polygonInfoBuffer_->pos_ = VAdd(polygonInfoBuffer_->pos_, 
+								VAdd(VScale(polygonInfoBuffer_->vec1_, rate1_),
+								VScale(polygonInfoBuffer_->vec2_, rate2_)));
 
 			// パーティクルの上昇待ち時間（ランダム）
-			_particleInfo->upWait_ = math->GetRandomFloat(MAX_UPWAIT, MIN_UPWAIT);
+			effectDethInfo_->partiicle_->upWait_ = math->GetRandomFloat(MAX_UPWAIT, MIN_UPWAIT);
 
 			// パーティクルの上昇最大速度（ランダム）
-			_particleInfo->upMaxSpeed_ = math->GetRandomFloat(MAX_UPSPEED, MIN_UPSPEED);
+			effectDethInfo_->partiicle_->upMaxSpeed_ = math->GetRandomFloat(MAX_UPSPEED, MIN_UPSPEED);
 
 			// 上昇速度初期化
-			_particleInfo->upSpeed_ = 0.0f;
+			effectDethInfo_->partiicle_->upSpeed_ = 0.0f;
 
 			// 初期角度（ランダム）
-			_particleInfo->angle_ = math->GetRandomFloat(DX_TWO_PI_F, 0.0f);
+			effectDethInfo_->partiicle_->angle_ = math->GetRandomFloat(DX_TWO_PI_F, 0.0f);
 
 			// 角速度（ランダム）
-			_particleInfo->angleSpeed_ = math->GetRandomFloat(MAX_ANGLESPEED, MIN_ANGLESPEED);
+			effectDethInfo_->partiicle_->angleSpeed_ = math->GetRandomFloat(MAX_ANGLESPEED, MIN_ANGLESPEED);
 
 			// 角速度の向きを反転（５０％）
 			if (GetRand(100) < 50)
 			{
-				_particleInfo->angleSpeed_ = -_particleInfo->angleSpeed_;
+				effectDethInfo_->partiicle_->angleSpeed_ = -effectDethInfo_->partiicle_->angleSpeed_;
 			}
 
 			// 最大水平距離（ランダム）
-			_particleInfo->distanceMax_ = math->GetRandomFloat(MAX_H_DISTANCE, MIN_H_DISTANCE);
+			effectDethInfo_->partiicle_->distanceMax_ = math->GetRandomFloat(MAX_H_DISTANCE, MIN_H_DISTANCE);
 
 			// 水平距離の初期化
-			_particleInfo->distance_ = 0.0f;
+			effectDethInfo_->partiicle_->distance_ = 0.0f;
 
 			// 表示時間（ランダム）
-			_particleInfo->visibleTime_ = math->GetRandomFloat(MAX_VISIBLETIME, MIN_VISIBLETIME);
+			effectDethInfo_->partiicle_->visibleTime_ = math->GetRandomFloat(MAX_VISIBLETIME, MIN_VISIBLETIME);
 
 			// 不透明度初期化
-			_particleInfo->alpha_ = 1.0f;
+			effectDethInfo_->partiicle_->alpha_ = 1.0f;
 
 			// 大きさ（ランダム）
-			_particleInfo->size_ = math->GetRandomFloat(MAX_SIZE, MIN_SIZE);
+			effectDethInfo_->partiicle_->size_ = math->GetRandomFloat(MAX_SIZE, MIN_SIZE);
 
 
 			// 大きさ率を初期化
-			_particleInfo->sizeRate_ = 0.0f;
+			effectDethInfo_->partiicle_->sizeRate_ = 0.0f;
 
 			//ポインタへのアドレスをパーティクル一つ分進める
-			_particleInfo++;
+			effectDethInfo_->partiicle_++;
 
 			// パーティクルの数を一つ増やす
-			_info->particleNum++;
+			effectDethInfo_->particleNum_++;
 		}
 	}
 }
